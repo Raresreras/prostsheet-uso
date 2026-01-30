@@ -1,0 +1,163 @@
+##########################
+#### LINUX PROSTSHEET ####
+##########################
+
+#### INTRO ####
+
+Un cheatsheet creat de un student mediocru, care utilizeaza Linux ca daily
+driver si cumva a reusit sa pice partialul la USO (prostia mea nu are limite).
+
+
+
+#### USER ####
+sudo useradd -m -d /home/uso-rullz uso 
+-> Creeaza user-ul uso cu home directory-ul /home/uso-rullz
+
+finger <user>
+-> Afiseaza informatii despre <user>
+
+id <user>
+-> Afiseaza informatii despre <user>
+
+groups <user>
+-> Afiseaza in ce grupuri se afla user-ul
+
+sudo chown uso:uso Lucrari\ de\ curs/USO
+-> Schimba proprietarul unui folder
+(poti folosi :uso doar pentru a schimba ownership pentru un grup)
+
+chmod 600 <file>
+-> Acces doar pentru owner
+-> Pentru a intra intr-un fisier (cd), trebuie sa avem drept de executie
+
+
+
+#### GIT ####
+git fetch
+-> Preia toate informatii pentru repo-ul local
+
+git branch -v -a
+-> Afiseaza branch-uri de pe remote
+
+git switch <branch>
+-> Creeaza un branch nou
+
+git rever <git hash>
+-> Se intoarce la commit-ul specificat
+
+
+
+#### SCRIPTS ####
+while read -r line; do
+        echo -e "$line\n"
+done <$file
+-> citeste dintr-un fisier
+
+for i in {1..10}; do sleep 3000 & done;
+-> one liner cu for
+
+function(){
+        
+}
+-> pentru a crea un "alias cu parametru"
+
+
+
+#### RETEA ####
+ip route
+-> pentru a afisa default gateway
+
+scp
+-> ssh copy
+
+cat /etc/resolv.conf
+-> server DNS
+
+who, w
+-> toate sesiunile active (utilizatori)
+
+nslookup <site>
+-> afiseaza ip-ul unui site
+
+ip link show
+-> afiseaza interfetele de retea
+
+netstat lu
+-> afiseaza porturi udp
+
+
+
+#### FISIERE ####
+find /<path> -maxdepth 1 -type f -size -10M
+-> cauta fisiere cu marime sub 10 megabytes
+
+find /var/log -maxdepth 1 -type f -size -20M -exec ./stats.sh {} \;
+-> cauta fisiere cu marime sub 20 megabytes si executa stats.sh (cu parametru
+-> find inlocuieste {} cu fiecare filename gasit
+
+sudo find /var/log -name *.log -exec grep -l "error" {} +
+-> cauta fisiere cu extensie .log si care contin "error"
+
+zip -l
+-> afiseaza ce contine un zip
+
+ln -s /path/to/file /path/to/symlink
+-> creeaza un link simbolic (cu -s)
+
+dd if=/dev/zero of=20mb.txt bs=20M count=1
+-> creeaza un fisier de 20mb
+
+grep -r [format] file
+-> -r pentru a cauta recursiv
+
+swapon
+-> afiseaza memoria de swap + multe altele
+
+
+
+#### PROCESE ####
+ps
+        -u -> utilizator
+        -aux -> totul
+        --sort=uid -> sorteaza dupa uid
+        -o ppid,pid,command -> afiseaza parent pid, pid si comanda care a inceput procesul
+
+pkill <nume>
+-> trimite SIGTERM pentru procese care au numele <nume> <spre ex sleep>
+
+
+
+#### TAR ####
+tar cf archive.tar <directory>
+-> Creeaza archive.tar cu continutul din <directory>
+
+tar xf archive.tar
+-> Extrage din archive.tar
+
+tar czf archive.tar.gz <directory>
+-> Creeaza o arhiva comprimata cu continutul din <directory>
+
+tar xzf archive.tar.gz
+-> Extrage din archive.tar.gz
+
+tar -tf <arhiva>
+-> Afiseaza continutul din arhiva fara sa extraga
+
+-->OBSERVATII
+ -> -C <folder>
+ Extrage fisierele in <folder>
+ -> -v
+ Verbose
+
+
+#### SECURITY ####
+
+openssl enc -aes-256-cbc -salt -in test -out test.enc -k <pass>
+-> Encripteaza fisierul test cu parola <pass>
+
+openssl enc -d -aes-256-cbc -salt -in test.enc -out test.dec -k <pass>
+-> Decripteaza fisierul test cu parola <pass>
+
+-> Pentru conectarea fara parola avem comenzile
+        ssh-keygen
+        ssh-copy-id
