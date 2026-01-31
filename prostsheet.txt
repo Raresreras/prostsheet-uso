@@ -82,9 +82,24 @@ nslookup <site>
 ip link show
 -> afiseaza interfetele de retea
 
+ip address show
+-> afiseaza adresele IP asociate interfetelor
+
 netstat lu
 -> afiseaza porturi udp
+        -> -t - TCP
+        -> -l - PORTURI DESCHISE
+        -> -p - CINE A DESCHIS PORTUL
+        -> -n - IP-UL PE CARE SE ASCULTA DUPA CONEXIUNI
 
+ip link set dev eth1 up
+-> porneste interfata eth1
+
+dhclient eth1
+-> obtinem adresa ip dinamica
+
+ip address flush <interfata>
+-> stergem adresa ip asociata interfetei
 
 
 #### FISIERE ####
@@ -161,3 +176,9 @@ openssl enc -d -aes-256-cbc -salt -in test.enc -out test.dec -k <pass>
 -> Pentru conectarea fara parola avem comenzile
         ssh-keygen
         ssh-copy-id
+
+-> Pentru a adauga un SSH shortcut
+        nano ~/.ssh/config
+
+-> Pentru a copia fisiere pe un server
+        scp <fisier> <user>@<address>:<directory>
