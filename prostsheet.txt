@@ -12,6 +12,8 @@ driver si cumva a reusit sa pice partialul la USO (prostia mea nu are limite).
 #### USER ####
 sudo useradd -m -d /home/uso-rullz uso 
 -> Creeaza user-ul uso cu home directory-ul /home/uso-rullz
+-> -M (fara home)
+-> -s (fara shell)
 
 finger <user>
 -> Afiseaza informatii despre <user>
@@ -61,6 +63,12 @@ function(){
 }
 -> pentru a crea un "alias cu parametru"
 
+tr -s " "
+-> Elimina spatiile excesive dintr-un string
+
+cut -d " " -f 1,2
+-> "Taie" un string in mai multe coloane si da print la coloana 1 si 2
+
 
 
 #### RETEA ####
@@ -81,9 +89,11 @@ nslookup <site>
 
 ip link show
 -> afiseaza interfetele de retea
+-> --brief
 
 ip address show
 -> afiseaza adresele IP asociate interfetelor
+-> --brief
 
 netstat lu
 -> afiseaza porturi udp
@@ -110,6 +120,12 @@ find /var/log -maxdepth 1 -type f -size -20M -exec ./stats.sh {} \;
 -> cauta fisiere cu marime sub 20 megabytes si executa stats.sh (cu parametru
 -> find inlocuieste {} cu fiecare filename gasit
 
+find 'Retele Locale' -type f -exec grep -l "a" {} \; -exec mv {} saved/ \;
+-> inlantuire de 2 comenzi cu find
+
+find /usr/bin -type f -not -perm 755
+-> arata fisierele care nu au permisiunea 755
+
 sudo find /var/log -name *.log -exec grep -l "error" {} +
 -> cauta fisiere cu extensie .log si care contin "error"
 
@@ -118,6 +134,7 @@ zip -l
 
 ln -s /path/to/file /path/to/symlink
 -> creeaza un link simbolic (cu -s)
+-> /path/to/file ar trebui sa fie absolut
 
 dd if=/dev/zero of=20mb.txt bs=20M count=1
 -> creeaza un fisier de 20mb
@@ -166,7 +183,6 @@ tar -tf <arhiva>
 
 
 #### SECURITY ####
-
 openssl enc -aes-256-cbc -salt -in test -out test.enc -k <pass>
 -> Encripteaza fisierul test cu parola <pass>
 
@@ -182,3 +198,27 @@ openssl enc -d -aes-256-cbc -salt -in test.enc -out test.dec -k <pass>
 
 -> Pentru a copia fisiere pe un server
         scp <fisier> <user>@<address>:<directory>
+
+-> Pentru a genera parole
+        pwgen [ OPTIONS ] [ pw_length ] [ num_pw ]
+
+
+
+#### GIT ####
+git init
+git clone
+git status
+git add
+git commit
+git push
+git pull - fetch and merge
+git fetch
+git branch
+git checkout
+git merge
+git rebase
+git log
+git diff
+git reset
+git stash
+git remote
