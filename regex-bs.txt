@@ -65,3 +65,15 @@ $ - end of string
 \b\w{1,3}\b - cauta cuvinte cu caractere intre 1 si 3
 
 \b(\w+)\s+\1\b - gaseste cuvinte care se repeta
+
+\b[A-Z]\w*\b - cuvinte care incep cu litera mare
+
+\b[a-z]{2,5}\b - cuvinte cu 2-5 litere mici
+
+\b\w+@\w+\.\w+\b - email
+
+\b\w+\.(txt|pdf|docx)\b - fisiere cu extensiile txt, pdf, docx
+
+^-?\d+$ - numar intreg
+
+^-?\d+(\.\d+)?$ - numar real

@@ -10,10 +10,20 @@ driver si cumva a reusit sa pice partialul la USO (prostia mea nu are limite).
 
 
 #### USER ####
+getent passwd / cat /etc/passwdcd
+-> arata utilizatorii
+
 sudo useradd -m -d /home/uso-rullz uso 
 -> Creeaza user-ul uso cu home directory-ul /home/uso-rullz
+-> -D (defaults)
+-> -d (home directory)
+-> -m (create home)
 -> -M (fara home)
--> -s (fara shell)
+-> -s (adauga shell)
+-> Pentru nologin avem
+        -s /usr/sbin/nologin
+        -s /bin/false
+-> -L (da lock la cont)
 
 finger <user>
 -> Afiseaza informatii despre <user>
@@ -24,6 +34,9 @@ id <user>
 groups <user>
 -> Afiseaza in ce grupuri se afla user-ul
 
+sudo groupadd <group>
+-> Creeare grup nou
+
 sudo chown uso:uso Lucrari\ de\ curs/USO
 -> Schimba proprietarul unui folder
 (poti folosi :uso doar pentru a schimba ownership pentru un grup)
@@ -31,6 +44,23 @@ sudo chown uso:uso Lucrari\ de\ curs/USO
 chmod 600 <file>
 -> Acces doar pentru owner
 -> Pentru a intra intr-un fisier (cd), trebuie sa avem drept de executie
+
+sudo usermod -aG <group> <user>
+-> Adauga userul <user> la grupul <group>
+
+echo "<user>:<parola>" | sudo chpasswd
+passwd <user>
+-> schimba parola utilizatorului
+
+sudo userdel <user>
+-> sterge <user>
+
+ps -eo user=|sort|uniq -c
+-> afiseaza numarul de procese per user
+
+nano ~/.bashrc
+-> pentru a rula o comanda cand userul da login, adaugam comanda la finalul
+fisierului .bashrc
 
 
 
@@ -50,6 +80,9 @@ git rever <git hash>
 
 
 #### SCRIPTS ####
+alias ll='ls -la'
+-> exemplu de alias
+
 while read -r line; do
         echo -e "$line\n"
 done <$file
@@ -66,12 +99,26 @@ function(){
 tr -s " "
 -> Elimina spatiile excesive dintr-un string
 
+tr ":" " "
+-> Transforma ":" in " "
+
+tr -d " "
+-> Sterge " "
+
 cut -d " " -f 1,2
 -> "Taie" un string in mai multe coloane si da print la coloana 1 si 2
 
+| tail -n +2
+-> Sterge primul rand
+
+sort -k 2
+-> Sorteaza dupa cheia 2 (coloana nr. 2)
 
 
 #### RETEA ####
+hostname -I
+-> afiseaza adresa ip
+
 ip route
 -> pentru a afisa default gateway
 
@@ -97,10 +144,11 @@ ip address show
 
 netstat lu
 -> afiseaza porturi udp
-        -> -t - TCP
-        -> -l - PORTURI DESCHISE
+        -> t - TCP
+        -> l - PORTURI DESCHISE
         -> -p - CINE A DESCHIS PORTUL
-        -> -n - IP-UL PE CARE SE ASCULTA DUPA CONEXIUNI
+        -> n - IP-UL PE CARE SE ASCULTA DUPA CONEXIUNI
+
 
 ip link set dev eth1 up
 -> porneste interfata eth1
@@ -110,6 +158,7 @@ dhclient eth1
 
 ip address flush <interfata>
 -> stergem adresa ip asociata interfetei
+
 
 
 #### FISIERE ####
@@ -144,6 +193,9 @@ grep -r [format] file
 
 swapon
 -> afiseaza memoria de swap + multe altele
+
+df
+-> printeaza memoria utilizata pe spatiul de disc
 
 
 
@@ -191,7 +243,7 @@ openssl enc -d -aes-256-cbc -salt -in test.enc -out test.dec -k <pass>
 
 -> Pentru conectarea fara parola avem comenzile
         ssh-keygen
-        ssh-copy-id
+        ssh-copy-id (ex: ssh-copy-id root@<ip>)
 
 -> Pentru a adauga un SSH shortcut
         nano ~/.ssh/config
@@ -222,3 +274,43 @@ git diff
 git reset
 git stash
 git remote
+
+
+
+#### SERVICII ####
+systemctl start <serviciu>
+-> porneste un serviciu
+
+systemctl status <serviciu>
+-> printeaza status-ul unui serviciu
+
+systemctl is-active --quiet <serviciu>
+-> porneste un serviciu daca nu functioneaza
+
+sudo systemctl daemon-reload
+-> reimprospateaza systemd
+
+
+
+#### CREAREA UNUI SERVICIU ####
+sudo nano /etc/systemd/system/say-hello.service
+
+-> In fisierul say-hello.service vom avea urmatorul text
+
+[Unit]
+Description=Say Hello Service
+
+[Service]
+ExecStart=/bin/echo "Hello, world of uso!"
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+
+-> Putem folosi un script in loc de echo
+
+
+
+#### OBSERVATII ####
+ | awk '$2 < 500'
+-> Verifica valorile din a doua coloana 
