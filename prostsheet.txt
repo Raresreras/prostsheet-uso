@@ -114,6 +114,10 @@ cut -d " " -f 1,2
 sort -k 2
 -> Sorteaza dupa cheia 2 (coloana nr. 2)
 
+for i in {01..05}; do mv "warn$i.log" "sys_warn$i.log"; done;
+-> Redenumeste fisierele
+
+
 
 #### RETEA ####
 hostname -I
@@ -136,11 +140,11 @@ nslookup <site>
 
 ip link show
 -> afiseaza interfetele de retea
--> --brief
+-> ip --brief link show
 
 ip address show
 -> afiseaza adresele IP asociate interfetelor
--> --brief
+-> ip --brief address show
 
 netstat lu
 -> afiseaza porturi udp
@@ -148,7 +152,6 @@ netstat lu
         -> l - PORTURI DESCHISE
         -> -p - CINE A DESCHIS PORTUL
         -> n - IP-UL PE CARE SE ASCULTA DUPA CONEXIUNI
-
 
 ip link set dev eth1 up
 -> porneste interfata eth1
@@ -159,11 +162,21 @@ dhclient eth1
 ip address flush <interfata>
 -> stergem adresa ip asociata interfetei
 
+ip addr add 192.168.40.1/32 dev lo
+-> Adauga adresa 192.168.40.1/32 la interfata lo (loopback)
+
+nc <url> <port>
+-> Conectare cu TCP la <url>
+
+echo <string> | nc <ip> <port>
+-> Trimite prin TCP <string> la <ip> pe portul <port>
+
 
 
 #### FISIERE ####
 find /<path> -maxdepth 1 -type f -size -10M
 -> cauta fisiere cu marime sub 10 megabytes
+-> poti folosi +10M pentru fisiere cu >10MB
 
 find /var/log -maxdepth 1 -type f -size -20M -exec ./stats.sh {} \;
 -> cauta fisiere cu marime sub 20 megabytes si executa stats.sh (cu parametru
@@ -274,6 +287,27 @@ git diff
 git reset
 git stash
 git remote
+
+git remote add usolab https://github.com/systems-cs-pub-ro/uso-lab
+-> Adauga un remote la un git repo
+
+git remote -v
+-> Verifica daca a fost adaugat un remote
+
+git log --oneline
+-> Afiseaza log-urile pe o line
+
+
+
+#### SPATIU DE STOCARE ####
+lsblk
+-> Afiseaza drive-urile
+
+sudo mount /dev/sdb1 /mnt/usb
+-> Monteaza drive-ul sdb1 la /mnt/usb
+
+sshfs <user>@<adress>:/var /mnt/vol
+-> Monteaza directorul /var la /mnt/vol temporar 
 
 
 
